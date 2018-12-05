@@ -8,10 +8,10 @@ chrome.extension.sendMessage({}, function(response) {
             console.log('--- Neflixho ready ---');
             chrome.storage.sync.get('observer', (result) => {
                 if (result.observer) {
-                    chrome.runtime.sendMessage({action: "disableThumbsAutoplay"}, function(response) {
-                        chrome.storage.sync.set({observer: true}, function() {
-                            console.log('inject observer true', response);
-                            console.log('set observer true');                        });
+                    chrome.runtime.sendMessage({action: "disableThumbsAutoplay"}, (response) => {
+                        chrome.storage.sync.set({observer: true}, () => {
+                            console.log('inject observer', response);
+                        });
                     });
                 }
             });
@@ -19,7 +19,6 @@ chrome.extension.sendMessage({}, function(response) {
                 if (result.speed) {
                     chrome.runtime.sendMessage({setPlayBackSpeed: result.speed}, (response) => {
                         console.log('inject speed', response);
-                        document.getElementById('currentPlaybackRate').innerText = parseFloat(result.speed).toFixed(2);
                     });
                 }
             });
