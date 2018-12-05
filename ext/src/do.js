@@ -32,7 +32,7 @@ if (!this.NETFLIXHO.observe) {
 
         this.NETFLIXHO.observer = new MutationObserver(callback),
         this.NETFLIXHO.observer.observe(targetNode, config);
+        console.log('VIDEO AUTOPLAY DISABLED');
     }
-}
 
-console.log('daje');
+}

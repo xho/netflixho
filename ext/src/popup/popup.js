@@ -33,10 +33,10 @@ const setPlaybackRateLabel = (val) => {
 }
 
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', () => {
     chrome.runtime.sendMessage({question: 'isThumbsAutoplayEnabled'}, (response) => { });
     chrome.runtime.sendMessage({question: 'currentPlaybackRate'}, (response) => { });
-    chrome.runtime.onMessage.addListener(function(message,sender,sendResponse){
+    chrome.runtime.onMessage.addListener((message,sender,sendResponse) => {
         'speed' in message && setPlaybackRateLabel(message.speed);
         'observer' in message && (autoplayInput.checked = message.observer);
     });

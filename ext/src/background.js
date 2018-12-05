@@ -1,21 +1,28 @@
-// if you checked "fancy-settings" in extensionizr.com, uncomment this lines
-
-// var settings = new Store("settings", {
-//     "sample_setting": "This is how you use Store.js to remember values"
-// });
-
-
 chrome.extension.onMessage.addListener(
     (request, sender, sendResponse) => {
 
-        let tabId = sender.tab && sender.tab.id || null;
+        let tabId = sender.tab && sender.tab.id || null;;
+        chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
+            if (tabs.length != 0) {
+                tabId = tabs[0].id;
+                console.log('tab id ', tabs[0].id);
+            }
+        });
+
+        chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
+            if (tabs.length != 0) {
+                if (tabs[0].url && tabs[0].id) {
+                    chrome.pageAction.show(tabs[0].id);
+                }
+            }
+        });
+
 
         switch (request.type) {
             case 'popupInit':
                 sendResponse(tabStorage[request.tabId]);
                 break;
             default:
-
                 if (request.action == 'disableThumbsAutoplay') {
                     chrome.tabs.executeScript(tabId, {file: 'src/do.js'});
                     sendResponse('ok pauso i video');
@@ -36,36 +43,25 @@ chrome.extension.onMessage.addListener(
                     chrome.tabs.executeScript({
                         code: 'document.querySelectorAll("video").forEach((v) => {	v.playbackRate = ' + request.setPlayBackSpeed + '; })'
                     });
-                    chrome.storage.sync.set({speed: request.setPlayBackSpeed}, () => {
-                        console.log('set speed ' + request.setPlayBackSpeed);
-                    });
-                    sendResponse('imposto la velocità a' + request.setPlayBackSpeed);
+                    chrome.storage.sync.set({speed: request.setPlayBackSpeed}, () => { });
+                    sendResponse('imposto la velocità a ' + request.setPlayBackSpeed);
                 }
 
                 if (request.question && request.question == 'isThumbsAutoplayEnabled') {
                     chrome.storage.sync.get('observer', (result) => {
-                        console.log('bg get observer ', result.observer);
+                        chrome.runtime.sendMessage({observer:result.observer}, () => {});
                         sendResponse(result.observer || false);
                     });
                 }
 
                 if (request.question && request.question == 'currentPlaybackRate') {
                     chrome.storage.sync.get('speed', (result) => {
-                        let speed = result.speed;
-                        console.log('bg get speed ', speed);
-                        sendResponse(speed);
+                        chrome.runtime.sendMessage({speed:result.speed}, () => {});
+                        sendResponse(result.speed);
                     });
                 }
 
                 break;
         }
-
-        chrome.tabs.query({url: "https://netflix.com/*"}, (results) => {
-            if (results.length == 0) {
-                if (sender.tab && sender.tab.id) {
-                    chrome.pageAction.show(sender.tab.id);
-                }
-            }
-        });
     }
 );

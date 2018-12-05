@@ -5,6 +5,5 @@ document.querySelectorAll('video').forEach((v) => {
 if (this.NETFLIXHO && this.NETFLIXHO.observer) {
     this.NETFLIXHO.observer.disconnect();
     this.NETFLIXHO.observer = null;
+    console.log('VIDEO AUTOPLAY ENABLED');
 }
-
-console.log('STOP');
