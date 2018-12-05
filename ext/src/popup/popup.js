@@ -5,10 +5,10 @@ const rateLabel = document.getElementById('currentPlaybackRate');
 const addDOMEventListeners = () => {
     autoplayInput.addEventListener('change', () => {
         if (autoplayInput.checked) {
-            // start observer
+            // start autoplay observer
             chrome.runtime.sendMessage({action: 'disableThumbsAutoplay'}, (response) => { });
         } else {
-            // stop observer
+            // stop autoplay observer
             chrome.runtime.sendMessage({action: 'enableThumbsAutoplay'}, (response) => { });
         }
     });
@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
     chrome.runtime.sendMessage({question: 'currentPlaybackRate'}, (response) => { });
     chrome.runtime.onMessage.addListener((message,sender,sendResponse) => {
         'speed' in message && setPlaybackRateLabel(message.speed);
-        'observer' in message && (autoplayInput.checked = message.observer);
+        'autoplay' in message && (autoplayInput.checked = message.autoplay);
     });
 
     addDOMEventListeners();

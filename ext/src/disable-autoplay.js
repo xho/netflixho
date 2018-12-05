@@ -2,7 +2,7 @@ if (!this.NETFLIXHO) {
     this.NETFLIXHO = {};
 }
 
-if (!this.NETFLIXHO.observe) {
+if (!this.NETFLIXHO.autoplay) {
 
     document.querySelectorAll('video').forEach((v) => {
         v.pause();
@@ -30,8 +30,8 @@ if (!this.NETFLIXHO.observe) {
             }
         };
 
-        this.NETFLIXHO.observer = new MutationObserver(callback),
-        this.NETFLIXHO.observer.observe(targetNode, config);
+        this.NETFLIXHO.autoplay = new MutationObserver(callback),
+        this.NETFLIXHO.autoplay.observe(targetNode, config);
         console.log('VIDEO AUTOPLAY DISABLED');
     }
 

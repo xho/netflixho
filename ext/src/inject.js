@@ -6,11 +6,11 @@ chrome.extension.sendMessage({}, function(response) {
             // ----------------------------------------------------------
             // This part of the script triggers when page is done loading
             console.log('--- Neflixho ready ---');
-            chrome.storage.sync.get('observer', (result) => {
-                if (result.observer) {
+            chrome.storage.sync.get('autoplay', (result) => {
+                if (result.autoplay) {
                     chrome.runtime.sendMessage({action: "disableThumbsAutoplay"}, (response) => {
-                        chrome.storage.sync.set({observer: true}, () => {
-                            console.log('inject observer', response);
+                        chrome.storage.sync.set({autoplay: true}, () => {
+                            console.log('inject autoplay observer', response);
                         });
                     });
                 }
