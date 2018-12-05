@@ -6,7 +6,7 @@ if (!this.NETFLIXHO.autoplay) {
 
     document.querySelectorAll('video').forEach((v) => {
         v.pause();
-    })
+    });
 
     let targetNode = document.querySelector('.mainView .lolomo');
     if (targetNode) {
@@ -30,8 +30,8 @@ if (!this.NETFLIXHO.autoplay) {
             }
         };
 
-        this.NETFLIXHO.autoplay = new MutationObserver(callback),
-        this.NETFLIXHO.autoplay.observe(targetNode, config);
+        this.NETFLIXHO.autoplayObserver = new MutationObserver(callback);
+        this.NETFLIXHO.autoplayObserver.observe(targetNode, config);
         console.log('Netflixho: autoplay stop is enabled');
     }
 

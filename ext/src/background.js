@@ -17,15 +17,15 @@ chrome.extension.onMessage.addListener(
             default:
                 if (request.action == 'disableThumbsAutoplay') {
                     chrome.tabs.executeScript(tabId, { file: 'src/disable-autoplay.js' });
-                    sendResponse('ok pauso i video');
+                    sendResponse('stop video');
                     chrome.storage.sync.set({ autoplay: true }, () => {
                         console.log('set autoplay observer true');
                     });
                 }
 
                 if (request.action == 'enableThumbsAutoplay') {
-                    chrome.tabs.executeScript(tabId, {file: 'src/enable-autoplay.js'});
-                    sendResponse('ok riabilito i video');
+                    chrome.tabs.executeScript(tabId, { file: 'src/enable-autoplay.js' });
+                    sendResponse('reenable videos');
                     chrome.storage.sync.set({ autoplay: false }, () => {
                         console.log('set autoplay observer false');
                     });
