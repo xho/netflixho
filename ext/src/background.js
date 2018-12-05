@@ -16,9 +16,9 @@ chrome.extension.onMessage.addListener(
                 break;
             default:
                 if (request.action == 'disableThumbsAutoplay') {
-                    chrome.tabs.executeScript(tabId, {file: 'src/disable-autoplay.js'});
+                    chrome.tabs.executeScript(tabId, { file: 'src/disable-autoplay.js' });
                     sendResponse('ok pauso i video');
-                    chrome.storage.sync.set({autoplay: true}, () => {
+                    chrome.storage.sync.set({ autoplay: true }, () => {
                         console.log('set autoplay observer true');
                     });
                 }
@@ -26,7 +26,7 @@ chrome.extension.onMessage.addListener(
                 if (request.action == 'enableThumbsAutoplay') {
                     chrome.tabs.executeScript(tabId, {file: 'src/enable-autoplay.js'});
                     sendResponse('ok riabilito i video');
-                    chrome.storage.sync.set({autoplay: false}, () => {
+                    chrome.storage.sync.set({ autoplay: false }, () => {
                         console.log('set autoplay observer false');
                     });
                 }
@@ -41,7 +41,7 @@ chrome.extension.onMessage.addListener(
 
                 if (request.question && request.question == 'isThumbsAutoplayEnabled') {
                     chrome.storage.sync.get('autoplay', (result) => {
-                        chrome.runtime.sendMessage({autoplay:result.autoplay}, () => {});
+                        chrome.runtime.sendMessage({ autoplay: result.autoplay }, () => {});
                     });
                 }
 
