@@ -5,15 +5,7 @@ chrome.extension.onMessage.addListener(
         chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
             if (tabs.length != 0) {
                 tabId = tabs[0].id;
-                console.log('tab id ', tabs[0].id);
-            }
-        });
-
-        chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
-            if (tabs.length != 0) {
-                if (tabs[0].url && tabs[0].id) {
-                    chrome.pageAction.show(tabs[0].id);
-                }
+                chrome.pageAction.show(tabs[0].id);
             }
         });
 
