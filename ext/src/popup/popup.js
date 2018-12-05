@@ -20,8 +20,8 @@ addChangeListeners = function() {
     playbackRateInput.addEventListener('input', () => {
         let val = playbackRateInput.value || 1;
         chrome.runtime.sendMessage({setPlayBackSpeed: val}, (response) => {
-            document.getElementById('currentPlaybackRate').innerText = parseFloat(val).toFixed(2);
             console.log(response);
+            setPlaybackRateLabel(val);
         });
     });
 }
@@ -44,3 +44,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
     addChangeListeners();
 });
+
+const setPlaybackRateLabel = (val) => {
+    const el = document.getElementById('currentPlaybackRate');
+    el.innerText = parseFloat(val).toFixed(2);
+    if (val != "1" || val != 1) {
+        el.classList.add('on');
+    } else {
+        el.classList.remove('on');
+    }
+}
