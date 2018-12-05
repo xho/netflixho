@@ -1,56 +1,45 @@
-let toggleInput = document.getElementById('toggleThumbsAutoplay');
-let playbackRateInput = document.getElementById('setPlaybackRate');
+const autoplayInput = document.getElementById('toggleThumbsAutoplay');
+const rateInput = document.getElementById('playbackRate');
+const rateLabel = document.getElementById('currentPlaybackRate');
 
-addChangeListeners = function() {
-    toggleInput.addEventListener('change', () => {
-        if (toggleInput.checked) {
+const addDOMEventListeners = () => {
+    autoplayInput.addEventListener('change', () => {
+        if (autoplayInput.checked) {
             // start observer
-            chrome.runtime.sendMessage({action: 'disableThumbsAutoplay'}, function(response) {
-                console.log(response);
-            });
+            chrome.runtime.sendMessage({action: 'disableThumbsAutoplay'}, (response) => { });
         } else {
             // stop observer
-            chrome.runtime.sendMessage({action: 'enableThumbsAutoplay'}, function(response) {
-                console.log(response);
-            });
+            chrome.runtime.sendMessage({action: 'enableThumbsAutoplay'}, (response) => { });
         }
     });
 
 
-    playbackRateInput.addEventListener('input', () => {
-        let val = playbackRateInput.value || 1;
+    rateInput.addEventListener('input', () => {
+        let val = rateInput.value || 1;
         chrome.runtime.sendMessage({setPlayBackSpeed: val}, (response) => {
-            console.log(response);
             setPlaybackRateLabel(val);
         });
     });
 }
 
-
-document.addEventListener('DOMContentLoaded', function () {
-    chrome.runtime.sendMessage({question: 'isThumbsAutoplayEnabled'}, (response) => {
-        console.log('---- response observer: ', response);
-        toggleInput.checked = response || false;
-    });
-
-    setTimeout(() => {
-        console.log('send mesage');
-        chrome.runtime.sendMessage({question: 'currentPlaybackRate'}, (response) => {
-            console.log('---- response speed: ', response);
-            // playbackRateInput.value = response.toString() || '1';
-            // document.getElementById('currentPlaybackRate').innerText = parseFloat(result.speed).toFixed(2);
-        });
-    }, 10000);
-
-    addChangeListeners();
-});
-
 const setPlaybackRateLabel = (val) => {
-    const el = document.getElementById('currentPlaybackRate');
-    el.innerText = parseFloat(val).toFixed(2);
-    if (val != "1" || val != 1) {
-        el.classList.add('on');
+    rateInput.value = val;
+    rateLabel.innerText = parseFloat(val).toFixed(2);
+    if (parseFloat(val) != "1") {
+        rateLabel.classList.add('on');
     } else {
-        el.classList.remove('on');
+        rateLabel.classList.remove('on');
     }
 }
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    chrome.runtime.sendMessage({question: 'isThumbsAutoplayEnabled'}, (response) => { });
+    chrome.runtime.sendMessage({question: 'currentPlaybackRate'}, (response) => { });
+    chrome.runtime.onMessage.addListener(function(message,sender,sendResponse){
+        'speed' in message && setPlaybackRateLabel(message.speed);
+        'observer' in message && (autoplayInput.checked = message.observer);
+    });
+
+    addDOMEventListeners();
+});
