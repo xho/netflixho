@@ -11,7 +11,7 @@ if (!this.NETFLIXHO.autoplay) {
     let targetNode = document.querySelector('.mainView .lolomo');
     if (targetNode) {
         let config = { childList: true, subtree: true };
-        let callback = function(mutationsList, observer) {
+        let callback = (mutationsList, observer) => {
             for(let mutation of mutationsList) {
                 if (mutation.type == 'childList') {
                     if(mutation.addedNodes.length) {

@@ -32,11 +32,15 @@ chrome.extension.onMessage.addListener(
                 }
 
                 if (request.setPlayBackRate) {
-                    chrome.tabs.executeScript({
-                        code: 'document.querySelectorAll("video").forEach((v) => {	v.playbackRate = ' + request.setPlayBackRate + '; })'
+                    chrome.tabs.executeScript(tabId, {
+                        code: `this.playbackrate = ${request.setPlayBackRate};`
+                    }, () => {
+                        chrome.tabs.executeScript(tabId, {
+                            file: 'src/change-playbackrate.js'
+                        });
                     });
+                    sendResponse('set playbackrate ' + request.setPlayBackRate);
                     chrome.storage.sync.set({ playbackrate: request.setPlayBackRate }, () => { });
-                    sendResponse('imposto la velocità a ' + request.setPlayBackRate);
                 }
 
                 if (request.question && request.question == 'isThumbsAutoplayEnabled') {
