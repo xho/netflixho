@@ -16,7 +16,7 @@ const addDOMEventListeners = () => {
 
     rateInput.addEventListener('input', () => {
         let val = rateInput.value || 1;
-        chrome.runtime.sendMessage({setPlayBackSpeed: val}, (response) => {
+        chrome.runtime.sendMessage({setPlayBackRate: val}, (response) => {
             setPlaybackRateLabel(val);
         });
     });
@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
     chrome.runtime.sendMessage({question: 'isThumbsAutoplayEnabled'}, (response) => { });
     chrome.runtime.sendMessage({question: 'currentPlaybackRate'}, (response) => { });
     chrome.runtime.onMessage.addListener((message,sender,sendResponse) => {
-        'speed' in message && setPlaybackRateLabel(message.speed);
+        'playbackrate' in message && setPlaybackRateLabel(message.playbackrate);
         'autoplay' in message && (autoplayInput.checked = message.autoplay);
     });
 

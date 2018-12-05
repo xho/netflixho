@@ -31,12 +31,12 @@ chrome.extension.onMessage.addListener(
                     });
                 }
 
-                if (request.setPlayBackSpeed) {
+                if (request.setPlayBackRate) {
                     chrome.tabs.executeScript({
-                        code: 'document.querySelectorAll("video").forEach((v) => {	v.playbackRate = ' + request.setPlayBackSpeed + '; })'
+                        code: 'document.querySelectorAll("video").forEach((v) => {	v.playbackRate = ' + request.setPlayBackRate + '; })'
                     });
-                    chrome.storage.sync.set({speed: request.setPlayBackSpeed}, () => { });
-                    sendResponse('imposto la velocità a ' + request.setPlayBackSpeed);
+                    chrome.storage.sync.set({ playbackrate: request.setPlayBackRate }, () => { });
+                    sendResponse('imposto la velocità a ' + request.setPlayBackRate);
                 }
 
                 if (request.question && request.question == 'isThumbsAutoplayEnabled') {
@@ -46,8 +46,8 @@ chrome.extension.onMessage.addListener(
                 }
 
                 if (request.question && request.question == 'currentPlaybackRate') {
-                    chrome.storage.sync.get('speed', (result) => {
-                        chrome.runtime.sendMessage({speed:result.speed}, () => {});
+                    chrome.storage.sync.get('playbackrate', (result) => {
+                        chrome.runtime.sendMessage({ playbackrate: result.playbackrate }, () => {});
                     });
                 }
 

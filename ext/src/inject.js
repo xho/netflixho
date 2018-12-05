@@ -15,10 +15,10 @@ chrome.extension.sendMessage({}, function(response) {
                     });
                 }
             });
-            chrome.storage.sync.get('speed', (result) => {
-                if (result.speed) {
-                    chrome.runtime.sendMessage({setPlayBackSpeed: result.speed}, (response) => {
-                        console.log('inject speed', response);
+            chrome.storage.sync.get('playbackrate', (result) => {
+                if (result.playbackrate) {
+                    chrome.runtime.sendMessage({setPlayBackRate: result.playbackrate}, (response) => {
+                        console.log('inject playbackrate ', response);
                     });
                 }
             });
