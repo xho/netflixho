@@ -5,5 +5,5 @@ document.querySelectorAll('video').forEach((v) => {
 if (this.NETFLIXHO && this.NETFLIXHO.autoplay) {
     this.NETFLIXHO.autoplay.disconnect();
     this.NETFLIXHO.autoplay = null;
-    console.log('VIDEO AUTOPLAY ENABLED');
+    console.log('Netflixho: autoplay stop is disabled');
 }

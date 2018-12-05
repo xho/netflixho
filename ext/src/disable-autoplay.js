@@ -32,7 +32,7 @@ if (!this.NETFLIXHO.autoplay) {
 
         this.NETFLIXHO.autoplay = new MutationObserver(callback),
         this.NETFLIXHO.autoplay.observe(targetNode, config);
-        console.log('VIDEO AUTOPLAY DISABLED');
+        console.log('Netflixho: autoplay stop is enabled');
     }
 
 }
