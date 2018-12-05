@@ -16,7 +16,7 @@ chrome.extension.sendMessage({}, function(response) {
                 }
             });
             chrome.storage.sync.get('playbackrate', (result) => {
-                if (result.playbackrate) {
+                if (result.playbackrate && result.playbackrate != 1) {
                     chrome.runtime.sendMessage({setPlayBackRate: result.playbackrate}, (response) => {
                         console.log('inject playbackrate ', response);
                     });
