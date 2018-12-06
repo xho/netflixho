@@ -1,14 +1,13 @@
 # netflixho
 
 ```
-N.B.: this extension i experimental
+N.B.: this extension is EXPERIMENTAL
 ```
 
-A simple Google Chrome extension to customize Netflix.com browser experience.
-Click on the icon on top of the page and access configuration options:
+A simple extension for Google Chrome that allows to customize the browser experience on Netflix.com. Click on the icon at the top of the page and access the configuration options:
 
-* disable annoying thumbnails autoplay
-* change current video playback speed rate
+* disable the annoying autoplays
+* change video playback speed rate
 
 Enjoy,
 xho_
