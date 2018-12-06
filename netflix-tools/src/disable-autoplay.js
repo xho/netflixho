@@ -6,6 +6,9 @@ if (!this.NETFLIXHO.autoplay) {
 
     document.querySelectorAll('video').forEach((v) => {
         v.pause();
+        document.querySelectorAll('.billboard-motion').forEach((i) => {
+            i.classList.remove('dismiss-static');
+        });
     });
 
     let targetNode = document.querySelector('.mainView .lolomo');
