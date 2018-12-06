@@ -9,6 +9,8 @@ chrome.extension.onMessage.addListener(
             }
         });
 
+        // execute once
+        chrome.tabs.executeScript(tabId, { file: 'src/libs.js' });
 
         switch (request.type) {
             case 'popupInit':

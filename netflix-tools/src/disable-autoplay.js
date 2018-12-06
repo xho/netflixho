@@ -1,14 +1,7 @@
-if (!this.NETFLIXHO) {
-    this.NETFLIXHO = {};
-}
-
 if (!this.NETFLIXHO.autoplay) {
 
     document.querySelectorAll('video').forEach((v) => {
-        v.pause();
-        document.querySelectorAll('.billboard-motion').forEach((i) => {
-            i.classList.remove('dismiss-static');
-        });
+        this.removeVideo(v);
     });
 
     let targetNode = document.querySelector('.mainView .lolomo');
@@ -20,10 +13,7 @@ if (!this.NETFLIXHO.autoplay) {
                     if(mutation.addedNodes.length) {
                         let v = mutation.addedNodes[0];
                         if (v && v.tagName == 'VIDEO') {
-                            const onPlay = () => {
-                                v.pause();
-                            };
-                            v.addEventListener('play', onPlay);
+                            v.addEventListener('play', this.onPlaySetPause);
                         }
                         if (v.getElementsByTagName("video")[0]) {
                             v.getElementsByTagName("video")[0].pause();

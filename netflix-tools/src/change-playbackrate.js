@@ -1,15 +1,6 @@
-if (!this.NETFLIXHO) {
-    this.NETFLIXHO = {};
-}
-
 document.querySelectorAll("video").forEach((v) => {
     v.playbackRate = this.playbackrate;
 });
-
-this.onPlaySetRate = (ev) => {
-    ev.currentTarget.playbackRate = this.playbackrate;
-};
-
 
 if (this.playbackrate != 1) {
 
