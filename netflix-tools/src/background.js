@@ -3,8 +3,8 @@ chrome.extension.onMessage.addListener(
 
         let tabId = sender.tab && sender.tab.id || null;;
         chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
-            if (tabs.length != 0) {
-                chrome.pageAction.show(tabs[0].id);
+            tabs.length && chrome.pageAction.show(tabs[0].id);
+            if (!tabId && tabs.length != 0) {
                 tabId = tabs[0].id;
             }
         });
