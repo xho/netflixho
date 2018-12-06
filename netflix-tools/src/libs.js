@@ -13,6 +13,8 @@ if (!this.NETFLIXHO) {
     };
 
     this.onPlaySetRate = (ev) => {
-        ev.currentTarget.playbackRate = this.NETFLIXHO.playbackrate;
+        if (ev.currentTarget.playbackRate != this.NETFLIXHO.playbackrate) {
+            ev.currentTarget.playbackRate = this.NETFLIXHO.playbackrate;
+        }
     };
 }
