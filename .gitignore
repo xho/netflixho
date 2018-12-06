@@ -51,6 +51,10 @@ Thumbs.db
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
 
+# private certs
+netflix-tools.crx
+netflix-tools.pem
+
 # node, preprocessors... #
 #################################
 package-lock.json
