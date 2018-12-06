@@ -15,13 +15,8 @@ chrome.extension.sendMessage({}, function(response) {
                     });
                 }
             });
-            chrome.storage.sync.get('playbackrate', (result) => {
-                if (result.playbackrate && result.playbackrate != 1) {
-                    chrome.runtime.sendMessage({setPlayBackRate: result.playbackrate}, (response) => {
-                        console.log('inject playbackrate ', response);
-                    });
-                }
-            });
+
+            this.getAndUpdatePlaybackrate();
 
             // observe for changes
             let targetNode = document.getElementById('appMountPoint');
@@ -29,13 +24,7 @@ chrome.extension.sendMessage({}, function(response) {
                 let config = { childList: true, subtree: true };
                 let callback = (mutationsList, observer) => {
                     if (document.querySelector('video')) {
-                        chrome.storage.sync.get('playbackrate', (result) => {
-                            if (result.playbackrate && result.playbackrate != 1) {
-                                chrome.runtime.sendMessage({setPlayBackRate: result.playbackrate}, (response) => {
-                                    console.log('inject playbackrate ', response);
-                                });
-                            }
-                        });
+                        this.getAndUpdatePlaybackrate();
                     }
                 };
                 this.NETFLIXHO.injectObserver = new MutationObserver(callback);
@@ -44,3 +33,14 @@ chrome.extension.sendMessage({}, function(response) {
         }
     }, 10);
 });
+
+// to be moved in libs
+this.getAndUpdatePlaybackrate = () => {
+    chrome.storage.sync.get('playbackrate', (result) => {
+        if (result.playbackrate && result.playbackrate != 1) {
+            chrome.runtime.sendMessage({setPlayBackRate: result.playbackrate}, (response) => {
+                console.log('inject playbackrate ', response);
+            });
+        }
+    });
+}
