@@ -21,7 +21,7 @@ chrome.extension.onMessage.addListener(
                     chrome.tabs.executeScript(tabId, { file: 'src/disable-autoplay.js' });
                     sendResponse('stop video');
                     chrome.storage.sync.set({ autoplay: true }, () => {
-                        console.log('set autoplay observer true');
+                        console.log('set thumbnails autoplay observer true');
                     });
                 }
 
@@ -29,13 +29,13 @@ chrome.extension.onMessage.addListener(
                     chrome.tabs.executeScript(tabId, { file: 'src/enable-autoplay.js' });
                     sendResponse('reenable videos');
                     chrome.storage.sync.set({ autoplay: false }, () => {
-                        console.log('set autoplay observer false');
+                        console.log('set thumbnails autoplay observer false');
                     });
                 }
 
                 if (request.setPlayBackRate) {
                     chrome.tabs.executeScript(tabId, {
-                        code: `this.playbackrate = ${request.setPlayBackRate};`
+                        code: `this.NETFLIXHO.playbackrate = ${request.setPlayBackRate};`
                     }, () => {
                         chrome.tabs.executeScript(tabId, {
                             file: 'src/change-playbackrate.js'

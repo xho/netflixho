@@ -1,8 +1,8 @@
 document.querySelectorAll("video").forEach((v) => {
-    v.playbackRate = this.playbackrate;
+    v.playbackRate = this.NETFLIXHO.playbackrate;
 });
 
-if (this.playbackrate != 1) {
+if (this.NETFLIXHO.playbackrate != 1) {
 
     if (!this.NETFLIXHO.playbackrateObserver) { // don't create another observer
         let targetNode = document.querySelector('#appMountPoint');

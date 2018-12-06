@@ -4,16 +4,15 @@ if (!this.NETFLIXHO) {
 
     this.removeVideo = (v) => {
         v.pause();
-        document.querySelectorAll('.billboard-motion').forEach((i) => {
-            i.classList.remove('dismiss-static');
-        });
+        document.querySelector('.bob-card div .bob-video-merch-player-wrapper').style.opacity = 0;
     }
 
-    this.onPlaySetPause = (ev) => {
+
+    this.onPlayRemoveVideo = (ev) => {
         this.removeVideo(ev.currentTarget);
     };
 
     this.onPlaySetRate = (ev) => {
-        ev.currentTarget.playbackRate = this.playbackrate;
+        ev.currentTarget.playbackRate = this.NETFLIXHO.playbackrate;
     };
 }

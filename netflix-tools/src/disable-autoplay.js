@@ -1,4 +1,4 @@
-if (!this.NETFLIXHO.autoplay) {
+if (!this.NETFLIXHO.autoplayObserver) {
 
     document.querySelectorAll('video').forEach((v) => {
         this.removeVideo(v);
@@ -13,7 +13,7 @@ if (!this.NETFLIXHO.autoplay) {
                     if(mutation.addedNodes.length) {
                         let v = mutation.addedNodes[0];
                         if (v && v.tagName == 'VIDEO') {
-                            v.addEventListener('play', this.onPlaySetPause);
+                            v.addEventListener('play', this.onPlayRemoveVideo);
                         }
                         if (v.getElementsByTagName("video")[0]) {
                             v.getElementsByTagName("video")[0].pause();
