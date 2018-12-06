@@ -15,6 +15,5 @@ if (!this.NETFLIXHO) {
 
     this.onPlaySetRate = (ev) => {
         ev.currentTarget.playbackRate = this.playbackrate;
-        console.log('libs rate');
     };
 }
