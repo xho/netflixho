@@ -13,7 +13,7 @@
     }
     #mainPopup {
         padding: 24px 16px;
-        width: 340px;
+        width: 360px;
         font-family: Helvetica, Ubuntu, Arial, sans-serif;
     }
     h1 {
@@ -37,17 +37,23 @@
     label:hover {
         color: #3899ff;
     }
-    input {
+    label > * {
+        white-space: nowrap;
+    }
+
+    label input {
         margin: 0;
         cursor: pointer;
     }
-    label span:first-child {
-        margin-right: 16px;
+
+    label input[type="range"] {
+        flex-grow: 1;
+        width: 80px;
+        margin: 0 8px;
     }
 
-    input[type="range"] {
-        flex-grow: 1;
-        margin: 0 8px;
+    label span:first-child {
+        margin-right: 16px;
     }
 
     p:last-child {
@@ -60,7 +66,6 @@
 
     div.signature {
         display: flex;
-        justify-content: space-between;
         align-items: center;
         height: 40px;
         padding: 0 16px;
@@ -72,6 +77,12 @@
     div.signature > * {
         line-height: 1;
         margin-top: 1px;
+    }
+    div.signature >*:last-child {
+        margin-left: auto;
+    }
+    div.signature >img {
+        margin-right: 6px;
     }
 
     span.tag {
@@ -94,7 +105,7 @@
         <input type="checkbox" id="toggleThumbsAutoplay">
     </label>
     <label>
-        <span>Speed</span>
+        <span>Playback rate</span>
         <span class="is-small">0.4%</span>
         <input type="range" id="playbackRate" step="0.2" min="0.4" max="2" value="1" list="tickmarks">
         <span class="is-small">2%</span>
@@ -102,7 +113,8 @@
     </label>
 </div>
 <div class="signature">
-    <span>netflixho tools</span>
+    <img src="icon.png">
+    <span>Netflixho</span>
     <span>v 0.3 GPL 3 | xho</span>
 </div>
 
