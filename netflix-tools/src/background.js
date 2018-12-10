@@ -1,63 +1,99 @@
+const options = [
+    'playbackrate',
+    'autoplayThumbnails',
+    'autoplayFeatured',
+    'autoplayTrailers',
+];
+
+const icons = {
+    default: {
+        "16": "icons/icon16.png",
+        "19": "icons/icon19.png",
+        "48": "icons/icon48.png",
+        "128": "icons/icon128.png"
+    },
+    gray: {
+        "16": "icons/icon16-grayed.png",
+        "19": "icons/icon19-grayed.png",
+        "48": "icons/icon48-grayed.png",
+        "128": "icons/icon128-grayed.png"
+    }
+}
+
+const applyToExistingElements = (setting, value) => {
+    switch (setting) {
+        case 'autoplayThumbnails':
+        case 'autoplayTrailers':
+        case 'autoplayFeatured':
+            value && chrome.tabs.executeScript( {code: 'stopPlayingVideos();' } );
+            break;
+
+        case 'playbackrate':
+            chrome.tabs.executeScript( {code: `setAllVideosPlaybackRate(${value});` } );
+            break;
+
+        default:
+            break;
+    }
+};
+
+const updateIcon = (tabId) => {
+    let selectedIcons = 'gray';
+    getStatus().then((status) => {
+        if (status) { selectedIcons = 'default'; }
+        chrome.pageAction.setIcon({
+            tabId: tabId,
+            path: icons[selectedIcons],
+        });
+    });
+}
+
+const getStatus = () => new Promise((resolve) => {
+    const promises = [];
+    options.forEach((setting) => {
+        const promise =  new Promise((resolve) => {
+            chrome.storage.sync.get(setting, (result) => {
+                if (setting == 'playbackrate') {
+                    resolve(parseFloat(result[setting]) != '1');
+                } else {
+                    resolve(result[setting]);
+                }
+            });
+        });
+        promises.push(promise);
+    });
+    Promise.all(promises).then((r) => {
+        resolve(r.includes(true));
+    });
+});
+
 chrome.extension.onMessage.addListener(
     (request, sender, sendResponse) => {
-
         let tabId = sender.tab && sender.tab.id || null;;
         chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
-            tabs.length && chrome.pageAction.show(tabs[0].id);
-            if (!tabId && tabs.length != 0) {
-                tabId = tabs[0].id;
-            }
+            if (!tabId && tabs.length != 0) { tabId = tabs[0].id; }
+            tabId && chrome.pageAction.show(tabs[0].id);
         });
 
-        // execute once
-        chrome.tabs.executeScript(tabId, { file: 'src/libs.js' });
+        if (request.updateIcon) {
+            console.log('update');
+            tabId && updateIcon(tabId);
+        }
 
-        switch (request.type) {
-            case 'popupInit':
-                sendResponse(tabStorage[request.tabId]);
-                break;
-            default:
-                if (request.action == 'disableThumbsAutoplay') {
-                    chrome.tabs.executeScript(tabId, { file: 'src/disable-autoplay.js' });
-                    sendResponse('stop video');
-                    chrome.storage.sync.set({ autoplay: true }, () => {
-                        console.log('set thumbnails autoplay observer true');
-                    });
-                }
+        if (request.setConfigOption) {
+            const setting = request.setConfigOption;
+            chrome.storage.sync.set({
+                [Object.keys(setting)[0]]: setting[Object.keys(setting)[0]]
+            }, () => {
+                tabId && updateIcon(tabId);
+                applyToExistingElements(Object.keys(setting)[0], setting[Object.keys(setting)[0]]);
+            });
+        }
 
-                if (request.action == 'enableThumbsAutoplay') {
-                    chrome.tabs.executeScript(tabId, { file: 'src/enable-autoplay.js' });
-                    sendResponse('reenable videos');
-                    chrome.storage.sync.set({ autoplay: false }, () => {
-                        console.log('set thumbnails autoplay observer false');
-                    });
-                }
-
-                if (request.setPlayBackRate) {
-                    chrome.tabs.executeScript(tabId, {
-                        code: `this.NETFLIXHO.playbackrate = ${request.setPlayBackRate};`
-                    }, () => {
-                        chrome.tabs.executeScript(tabId, {
-                            file: 'src/change-playbackrate.js'
-                        });
-                    });
-                    sendResponse('set playbackrate ' + request.setPlayBackRate);
-                    chrome.storage.sync.set({ playbackrate: request.setPlayBackRate }, () => { });
-                }
-
-                if (request.question && request.question == 'isThumbsAutoplayEnabled') {
-                    chrome.storage.sync.get('autoplay', (result) => {
-                        chrome.runtime.sendMessage({ autoplay: result.autoplay }, () => {});
-                    });
-                }
-
-                if (request.question && request.question == 'currentPlaybackRate') {
-                    chrome.storage.sync.get('playbackrate', (result) => {
-                        chrome.runtime.sendMessage({ playbackrate: result.playbackrate }, () => {});
-                    });
-                }
-
-                break;
+        if (request.getConfigOption) {
+            chrome.storage.sync.get(request.getConfigOption, (result) => {
+                chrome.runtime.sendMessage({ [request.getConfigOption]: result[request.getConfigOption] }, () => {});
+            });
         }
     }
 );

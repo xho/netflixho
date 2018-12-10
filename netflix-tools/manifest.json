@@ -1,23 +1,25 @@
 {
   "name": "Netflixho",
-  "version": "0.3",
+  "version": "1.0",
   "manifest_version": 2,
   "description": "Customize netflix experience - EXPERIMENTAL",
   "homepage_url": "https://github.com/xho/netflixho",
   "icons": {
-    "16": "icons/icon16.png",
-    "48": "icons/icon48.png",
-    "128": "icons/icon128.png"
+    "16": "icons/icon16-grayed.png",
+    "19": "icons/icon19-grayed.png",
+    "48": "icons/icon48-grayed.png",
+    "128": "icons/icon128-grayed.png"
   },
   "default_locale": "en",
   "background": {
     "scripts": [
+      "src/background_install.js",
       "src/background.js"
     ],
     "persistent": false
   },
   "page_action": {
-    "default_icon": "icons/icon19.png",
+    "default_icon": "icons/icon19-grayed.png",
     "default_title": "Netflixho!",
     "default_popup": "src/popup/popup.html"
   },
@@ -38,9 +40,11 @@
     },
     {
       "matches": [
-        "*://*.netflix.com/*"
+        "*://*.netflix.com/*",
+        "*://*.bedita.net/*"
       ],
       "js": [
+        "src/libs.js",
         "src/inject.js"
       ]
     }

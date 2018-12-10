@@ -3,6 +3,7 @@
 <style type="text/css">
     * {
         box-sizing: border-box;
+        user-select: none;
     }
     body {
         margin: 0;
@@ -13,7 +14,7 @@
     }
     #mainPopup {
         padding: 24px 16px;
-        width: 360px;
+        width: 380px;
         font-family: Helvetica, Ubuntu, Arial, sans-serif;
     }
     h1 {
@@ -60,10 +61,6 @@
         margin-bottom: 0;
     }
 
-    .is-small {
-        font-size: 10px;
-    }
-
     div.signature {
         display: flex;
         align-items: center;
@@ -85,11 +82,26 @@
         margin-right: 6px;
     }
 
+    span.mini-buttons {
+        width: 20px;
+        height: 20px;
+        line-height: 18px;
+        border-radius: 50%;
+        background-color: white;
+        color: #333f48;
+        text-align: center;
+        font-weight: bold;
+    }
+    span.mini-buttons:active {
+        background-color: #3b99fc;
+    }
+
     span.tag {
-        padding: 4px 8px;
+        padding: 5px 10px;
         background-color: #000;
         border-radius: 3px;
         margin-left: 16px;
+        line-height: 1;
         font-size: 11px;
         font-weight: bold;
         color: #fff !important;
@@ -102,20 +114,28 @@
 <div id="mainPopup">
     <label>
         <span>Disable thumbnail video autoplay</span>
-        <input type="checkbox" id="toggleThumbsAutoplay">
+        <input type="checkbox" id="autoplayThumbnails">
+    </label>
+    <label>
+        <span>Disable top featured video autoplay</span>
+        <input type="checkbox" id="autoplayFeatured">
+    </label>
+    <label>
+        <span>Disable trailer video autoplay</span>
+        <input type="checkbox" id="autoplayTrailers">
     </label>
     <label>
         <span>Playback rate</span>
-        <span class="is-small">0.4%</span>
-        <input type="range" id="playbackRate" step="0.2" min="0.4" max="2" value="1" list="tickmarks">
-        <span class="is-small">2%</span>
-        <span id="currentPlaybackRate" class="tag">1.00%</span>
+        <span class="mini-buttons" id="minus-button">-</span>
+        <input type="range" id="playbackRate" step="0.1" min="0.1" max="1.9" value="1" list="tickmarks">
+        <span class="mini-buttons" id="plus-button">+</span>
+        <span id="currentPlaybackRate" class="tag">1.0%</span>
     </label>
 </div>
 <div class="signature">
     <img src="icon.png">
     <span>Netflixho</span>
-    <span>v 0.3 GPL 3 | xho</span>
+    <span>v 1.0 GPL 3 | xho</span>
 </div>
 
 <script src="popup.js"></script>

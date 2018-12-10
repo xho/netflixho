@@ -1,44 +1,71 @@
-const autoplayInput = document.getElementById('toggleThumbsAutoplay');
-const rateInput = document.getElementById('playbackRate');
-const rateLabel = document.getElementById('currentPlaybackRate');
+const checkboxes = document.querySelectorAll('[type=checkbox]');
+const range = document.getElementById('playbackRate');
 
 const addDOMEventListeners = () => {
-    autoplayInput.addEventListener('change', () => {
-        if (autoplayInput.checked) {
-            // start autoplay observer
-            chrome.runtime.sendMessage({action: 'disableThumbsAutoplay'}, (response) => { });
-        } else {
-            // stop autoplay observer
-            chrome.runtime.sendMessage({action: 'enableThumbsAutoplay'}, (response) => { });
-        }
-    });
-
-
-    rateInput.addEventListener('input', () => {
-        let val = rateInput.value || 1;
-        chrome.runtime.sendMessage({setPlayBackRate: val}, (response) => {
-            setPlaybackRateLabel(val);
+    checkboxes.forEach((input) => {
+        input.addEventListener('change', (ev) => {
+            chrome.runtime.sendMessage({
+                setConfigOption: {
+                    [ev.currentTarget.id]: ev.currentTarget.checked,
+                }
+            });
         });
     });
+
+    range.addEventListener('input', (ev) => {
+        chrome.runtime.sendMessage({
+            setConfigOption: {
+                playbackrate: ev.currentTarget.value,
+            }
+        });
+        setPlaybackRateLabel(ev.currentTarget.value);
+    });
+
+    let interval;
+    document.getElementById('minus-button').addEventListener('mousedown', () => {
+        interval = setInterval(() => {
+            range.value -= 0.1;
+            setPlaybackRateLabel(range.value);
+        }, 100);
+    });
+    document.getElementById('minus-button').addEventListener('mouseup', () => { clearInterval(interval); });
+    document.getElementById('minus-button').addEventListener('mouseleave', () => { clearInterval(interval); });
+
+    document.getElementById('plus-button').addEventListener('mousedown',  () => {
+        interval = setInterval(() => {
+            range.value = (parseFloat(range.value) + 0.1).toFixed(1);
+            setPlaybackRateLabel(range.value);
+            console.log(1);
+        }, 100);
+    });
+    document.getElementById('plus-button').addEventListener('mouseup', () => { clearInterval(interval); });
+    document.getElementById('plus-button').addEventListener('mouseleave', () => { clearInterval(interval); });
 }
 
 const setPlaybackRateLabel = (val) => {
-    rateInput.value = val;
-    rateLabel.innerText = parseFloat(val).toFixed(2);
-    if (parseFloat(val) != "1") {
-        rateLabel.classList.add('on');
-    } else {
-        rateLabel.classList.remove('on');
-    }
+    const rateLabel = document.getElementById('currentPlaybackRate');
+    rateLabel.innerText = parseFloat(val).toFixed(1);
+    rateLabel.classList.toggle('on', val != "1");
 }
 
 
+// onload
 document.addEventListener('DOMContentLoaded', () => {
-    chrome.runtime.sendMessage({question: 'isThumbsAutoplayEnabled'}, (response) => { });
-    chrome.runtime.sendMessage({question: 'currentPlaybackRate'}, (response) => { });
+    chrome.runtime.sendMessage({ getConfigOption: 'playbackrate', });
+    checkboxes.forEach((input) =>
+        chrome.runtime.sendMessage({ getConfigOption: input.id, })
+    );
+
+    // set initial value
     chrome.runtime.onMessage.addListener((message,sender,sendResponse) => {
-        'playbackrate' in message && setPlaybackRateLabel(message.playbackrate);
-        'autoplay' in message && (autoplayInput.checked = message.autoplay);
+        if ('playbackrate' in message) {
+            range.value = message.playbackrate;
+            setPlaybackRateLabel(message.playbackrate);
+        }
+
+        checkboxes.forEach((input) => {
+            (input.id in message) && (input.checked = message[input.id]);
+        });
     });
 
     addDOMEventListeners();
