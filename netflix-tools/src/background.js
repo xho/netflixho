@@ -76,7 +76,6 @@ chrome.extension.onMessage.addListener(
         });
 
         if (request.updateIcon) {
-            console.log('update');
             tabId && updateIcon(tabId);
         }
 

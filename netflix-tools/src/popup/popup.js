@@ -21,6 +21,7 @@ const addDOMEventListeners = () => {
         setPlaybackRateLabel(ev.currentTarget.value);
     });
 
+    // plus & minus buttons
     let interval;
     document.getElementById('minus-button').addEventListener('mousedown', () => {
         interval = setInterval(() => {
@@ -28,9 +29,6 @@ const addDOMEventListeners = () => {
             setPlaybackRateLabel(range.value);
         }, 100);
     });
-    document.getElementById('minus-button').addEventListener('mouseup', () => { clearInterval(interval); });
-    document.getElementById('minus-button').addEventListener('mouseleave', () => { clearInterval(interval); });
-
     document.getElementById('plus-button').addEventListener('mousedown',  () => {
         interval = setInterval(() => {
             range.value = (parseFloat(range.value) + 0.1).toFixed(1);
@@ -38,6 +36,8 @@ const addDOMEventListeners = () => {
             console.log(1);
         }, 100);
     });
+    document.getElementById('minus-button').addEventListener('mouseup', () => { clearInterval(interval); });
+    document.getElementById('minus-button').addEventListener('mouseleave', () => { clearInterval(interval); });
     document.getElementById('plus-button').addEventListener('mouseup', () => { clearInterval(interval); });
     document.getElementById('plus-button').addEventListener('mouseleave', () => { clearInterval(interval); });
 }
