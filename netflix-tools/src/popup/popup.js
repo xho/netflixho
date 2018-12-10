@@ -33,7 +33,6 @@ const addDOMEventListeners = () => {
         interval = setInterval(() => {
             range.value = (parseFloat(range.value) + 0.1).toFixed(1);
             setPlaybackRateLabel(range.value);
-            console.log(1);
         }, 100);
     });
     document.getElementById('minus-button').addEventListener('mouseup', () => { clearInterval(interval); });
