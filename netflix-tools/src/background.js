@@ -54,9 +54,9 @@ const getStatus = () => new Promise((resolve) => {
         const promise =  new Promise((resolve) => {
             chrome.storage.sync.get(setting, (result) => {
                 if (setting == 'playbackrate') {
-                    resolve(parseFloat(result[setting]) != '1');
+                    resolve((result[setting] && parseFloat(result[setting]) != '1') || false);
                 } else {
-                    resolve(result[setting]);
+                    resolve(result[setting] || false);
                 }
             });
         });
